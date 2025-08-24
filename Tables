@@ -1,0 +1,103 @@
+// SQL for PRT
+
+// Student:
+CREATE TABLE Student (
+    StudNum INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    CellNumr VARCHAR(15),
+    IDNum VARCHAR(20),
+    EnrollYr INT,
+    Password VARCHAR(50),
+    Funding VARCHAR(50)
+);
+
+
+// Booking:
+CREATE TABLE Booking (
+    BookingID INT PRIMARY KEY,
+    StudNum INT,
+    RmNum INT,
+    StaffID INT,
+    BookingDate DATE,
+    StartDate DATE,
+    EndDate DATE,
+    PaymentStatus VARCHAR(50),
+    TotCost DECIMAL(10, 2),
+    BkStatus VARCHAR(50),
+    FOREIGN KEY (StudNum) REFERENCES Student(StudNum),
+    FOREIGN KEY (RmNum) REFERENCES Rooms(RmNum),
+    FOREIGN KEY (StaffID) REFERENCES AccomStaff(StaffID)
+);
+
+
+// Payment:
+CREATE TABLE Payment (
+    PaymentID INT PRIMARY KEY,
+    BookingID INT,
+    StudNum INT,
+    PaymentDate DATE,
+    PayMethod VARCHAR(50),
+    AmtPaid DECIMAL(10, 2),
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID),
+    FOREIGN KEY (StudNum) REFERENCES Student(StudNum)
+);
+
+
+// DBManagement:
+CREATE TABLE DBManagement (
+    DBManagementID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    Username VARCHAR(50),
+    Password VARCHAR(50),
+    Role VARCHAR(50)
+);
+
+
+// AccomStaff:
+CREATE TABLE AccomStaff (
+    StaffID INT PRIMARY KEY,
+    RmNum INT,
+    StudNum INT,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    Password VARCHAR(50),
+    IDnum VARCHAR(20),
+    ContactNum VARCHAR(15),
+    DOB DATE,
+    FOREIGN KEY (RmNum) REFERENCES Rooms(RmNum),
+    FOREIGN KEY (StudNum) REFERENCES Student(StudNum)
+);
+
+
+// Rooms:
+CREATE TABLE Rooms (
+    RmNum INT PRIMARY KEY,
+    BookingID INT,
+    Name VARCHAR(50),
+    Address VARCHAR(100),
+    RmType VARCHAR(50),
+    Ammenities VARCHAR(100),
+    TotRms INT,
+    AvailableRms INT,
+    PricePerRmType DECIMAL(10, 2),
+    AccommodationID INT,
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID)
+);
+
+
+// MaintenanceRequest:
+CREATE TABLE MaintenanceRequest (
+    RequestID INT PRIMARY KEY,
+    StudNum INT,
+    AccommodationID INT,
+    RequestDate DATE,
+    IssueDesc VARCHAR(255),
+    RequestStatus VARCHAR(50),
+    FOREIGN KEY (StudNum) REFERENCES Student(StudNum),
+    FOREIGN KEY (AccommodationID) REFERENCES Rooms(AccommodationID)
+);
