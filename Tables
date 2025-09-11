@@ -20,6 +20,7 @@ CREATE TABLE Booking (
     StudNum INT,
     RmNum INT,
     StaffID INT,
+    DBManagementID VARCHAR(50),
     BookingDate DATE,
     StartDate DATE,
     EndDate DATE,
@@ -28,7 +29,8 @@ CREATE TABLE Booking (
     BkStatus VARCHAR(50),
     FOREIGN KEY (StudNum) REFERENCES Student(StudNum),
     FOREIGN KEY (RmNum) REFERENCES Rooms(RmNum),
-    FOREIGN KEY (StaffID) REFERENCES AccomStaff(StaffID)
+    FOREIGN KEY (StaffID) REFERENCES AccomStaff(StaffID),
+    FOREIGN KEY (DBManagementID) REFERENCES DBManagement(DBManagementID)
 );
 
 
@@ -47,7 +49,7 @@ CREATE TABLE Payment (
 
 // DBManagement:
 CREATE TABLE DBManagement (
-    DBManagementID INT PRIMARY KEY,
+    DBManagementID VARCHAR(50) PRIMARY KEY,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     Email VARCHAR(100),
@@ -60,23 +62,20 @@ CREATE TABLE DBManagement (
 // AccomStaff:
 CREATE TABLE AccomStaff (
     StaffID INT PRIMARY KEY,
-    RmNum INT,
-    StudNum INT,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     Email VARCHAR(100),
     Password VARCHAR(50),
     IDnum VARCHAR(20),
     ContactNum VARCHAR(15),
-    DOB DATE,
-    FOREIGN KEY (RmNum) REFERENCES Rooms(RmNum),
-    FOREIGN KEY (StudNum) REFERENCES Student(StudNum)
+    DOB DATE
 );
 
 
 // Rooms:
 CREATE TABLE Rooms (
     RmNum INT PRIMARY KEY,
+    StaffID INT,
     BookingID INT,
     Name VARCHAR(50),
     Address VARCHAR(100),
@@ -86,7 +85,8 @@ CREATE TABLE Rooms (
     AvailableRms INT,
     PricePerRmType DECIMAL(10, 2),
     AccommodationID INT,
-    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID)
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID),
+    FOREIGN KEY (StaffID) REFERENCES AccomStaff(StaffID)
 );
 
 
@@ -94,10 +94,10 @@ CREATE TABLE Rooms (
 CREATE TABLE MaintenanceRequest (
     RequestID INT PRIMARY KEY,
     StudNum INT,
-    AccommodationID INT,
+    RmNum INT,
     RequestDate DATE,
     IssueDesc VARCHAR(255),
     RequestStatus VARCHAR(50),
     FOREIGN KEY (StudNum) REFERENCES Student(StudNum),
-    FOREIGN KEY (AccommodationID) REFERENCES Rooms(AccommodationID)
+    FOREIGN KEY (RmNum) REFERENCES Rooms(RmNum)
 );
